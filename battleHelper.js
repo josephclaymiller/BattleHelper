@@ -35,25 +35,38 @@ function showAttackers(attackers) {
 // Get the attackesr for each defender type
 function getAttackers(defenderTypes) {
     var attackers = [];
+    var strongAttackers = [];
+    var weakAttackers = [];
+    var noAttackers = [];
     for (var type in defenderTypes) {
         var defender = defenderTypes[type];
-        var newAttackers = findStrongAttackers(defender);
-        attackers = attackers.concat(newAttackers);
+        // find strong attackers
+        strongAttackers = strongAttackers.concat(findStrongAttackers(defender));
+        // find weak attackers
+        weakAttackers = weakAttackers.concat(findWeakAttackers(defender));
+        // find no attackers
+        noAttackers = noAttackers.concat(findNoAttackers(defender));
     }
-    // If there is only one defender type, narrow down the attackers
-    if (defenderTypes.length == 1) {
-        attackers = narrowDown(attackers, defender);
-    } 
-    // If there are multiple defender types, find the strongest attackers
-    else {
-        var strongestAttackers = findStrongestAttackers(defenderTypes);
-        if (strongestAttackers.length > 0) { 
-            attackers = strongestAttackers;
-        }
+    // Add the strong attackers to the list of attackers
+    // Only if they are not in the list of weak or no attakers
+    // attackers = strongAttackers;
+    for (var a in strongAttackers) {
+        var attacker = strongAttackers[a];
+        if(weakAttackers.indexOf(attacker) > -1) { continue; }
+        if(noAttackers.indexOf(attacker) > -1) { continue; }
+        attackers.push(attacker);
+    }
+
+    // Finds strongest attackers in the attackers list
+    // and resolves duplicates
+    var strongestAttackers = findStrongestAttackers(defenderTypes);
+    if (strongestAttackers.length > 0) { 
+        attackers = strongestAttackers;
     }
     return attackers;
 };
 
+// Find the strongest types to attack the chosen type defender
 function findStrongestAttackers(defenderTypes) {
     var strongestAttackers = [];
     var strongAttackers = [];
@@ -72,40 +85,40 @@ function findStrongestAttackers(defenderTypes) {
     return strongestAttackers;
 };
 
-// Find the strongest types to attack the chosen type defender
+// Find which types are strong against the defending type
 function findStrongAttackers(defender) {
-    var attackers = [];
-    // Find which types are strong against the defending type
+    var strongAttackers = [];
     for (var type in types) {
         var strongAgainst = types[type].strong;
         if (strongAgainst.indexOf(defender) > -1) {
-            attackers.push(type);
+            strongAttackers.push(type);
         }
     }
-    return attackers;
+    return strongAttackers;
 };
 
-// Narrow down attackers based on defender's weakness to the attacker
-function narrowDown(attackers, defender) {
-    var noEffect = [];
-    var weakAgainst = [];
-    for (var attacker in attackers) {
-        if (types[defender].noEffect.indexOf(attackers[attacker]) > -1) {
-            noEffect.push(attackers[attacker]);
-        }
-        if (types[defender].weak.indexOf(attackers[attacker]) > -1) {
-            weakAgainst.push(attackers[attacker]);
+// Find which types are weak against the defending type
+function findWeakAttackers(defender) {
+    var weakAttackers = [];
+    for (var type in types) {
+        var weakAgainst = types[type].weak;
+        if (weakAgainst.indexOf(defender) > -1) {
+            weakAttackers.push(type);
         }
     }
-    // Narrow down attackers to those the defender is weak against
-    if (weakAgainst.length > 0) {
-        attackers = weakAgainst;
+    return weakAttackers;
+};
+
+// Find which types which have no effect against the defending type
+function findNoAttackers(defender) {
+    var noAttackers = [];
+    for (var type in types) {
+        var weakAgainst = types[type].noEffect;
+        if (weakAgainst.indexOf(defender) > -1) {
+            noAttackers.push(type);
+        }
     }
-    // Narrow down to a type that the defender has no effect on
-    if (noEffect.length > 0) {
-        attackers = noEffect;
-    }
-    return attackers;
+    return noAttackers;
 };
 
 // Array of the names of the types
