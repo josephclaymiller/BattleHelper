@@ -19,70 +19,42 @@ function getDefenderTypes() {
     var defenderTypes = [];
     var defenderList1 = document.getElementById("defender1");
     var defenderList2 = document.getElementById("defender2");
-    var defender1 = defenderList1.options[defenderList1.selectedIndex].value;
-    var defender2 = defenderList2.options[defenderList2.selectedIndex].value;
-    if (defender1.length > 0) { defenderTypes.push(defender1) };
-    if (defender2.length > 0) { defenderTypes.push(defender2) };
+    var defenderType1 = defenderList1.options[defenderList1.selectedIndex].value;
+    var defenderType2 = defenderList2.options[defenderList2.selectedIndex].value;
+    if (defenderType1.length > 0) { defenderTypes.push(defenderType1) };
+    if (defenderType2.length > 0) { defenderTypes.push(defenderType2) };
     return defenderTypes;
 };
 
 // Show list of attackers to user
 function showAttackers(attackers) {
     var attackerElement = document.getElementById("attacker");
+    attackers.sort(); // show in alphabetical order
     attackerElement.textContent = attackers;
 };
 
-// Get the attackesr for each defender type
+// Get the attackers for each defender type
 function getAttackers(defenderTypes) {
     var attackers = [];
     var strongAttackers = [];
     var weakAttackers = [];
     var noAttackers = [];
-    for (var type in defenderTypes) {
-        var defender = defenderTypes[type];
-        // find strong attackers
-        strongAttackers = strongAttackers.concat(findStrongAttackers(defender));
-        // find weak attackers
-        weakAttackers = weakAttackers.concat(findWeakAttackers(defender));
-        // find no attackers
-        noAttackers = noAttackers.concat(findNoAttackers(defender));
-    }
+    defenderTypes.forEach(function(type) {
+        strongAttackers = strongAttackers.concat(findStrongAttackers(type));
+        weakAttackers = weakAttackers.concat(findWeakAttackers(type));
+        noAttackers = noAttackers.concat(findNoAttackers(type));
+    });
     // Add the strong attackers to the list of attackers
     // Only if they are not in the list of weak or no attakers
-    // attackers = strongAttackers;
-    for (var a in strongAttackers) {
+    // Do not add duplicates in the attackers list
+    for (var a =0; a < strongAttackers.length; a++) {
         var attacker = strongAttackers[a];
-        if(weakAttackers.indexOf(attacker) > -1) { continue; }
-        if(noAttackers.indexOf(attacker) > -1) { continue; }
+        if (weakAttackers.indexOf(attacker) > -1) { continue; }
+        if (noAttackers.indexOf(attacker) > -1) { continue; }
+        if (attackers.includes(attacker)) { continue; }
         attackers.push(attacker);
     }
-
-    // Finds strongest attackers in the attackers list
-    // and resolves duplicates
-    var strongestAttackers = findStrongestAttackers(defenderTypes);
-    if (strongestAttackers.length > 0) { 
-        attackers = strongestAttackers;
-    }
     return attackers;
-};
-
-// Find the strongest types to attack the chosen type defender
-function findStrongestAttackers(defenderTypes) {
-    var strongestAttackers = [];
-    var strongAttackers = [];
-    for (var type in defenderTypes) {
-        var defender = defenderTypes[type];
-        var newAttackers = findStrongAttackers(defender);
-        for (var a in newAttackers) {
-            var attacker = newAttackers[a];
-            if(strongAttackers.indexOf(attacker) > -1) {
-                strongestAttackers.push(attacker);
-            } else {
-                strongAttackers.push(attacker);
-            }
-        }
-    }
-    return strongestAttackers;
 };
 
 // Find which types are strong against the defending type
