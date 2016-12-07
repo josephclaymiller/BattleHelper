@@ -29,8 +29,7 @@ function getDefenderTypes() {
 // Show list of attackers to user
 function showAttackers(attackers) {
     var attackerElement = document.getElementById("attacker");
-    attackers.sort(); // show in alphabetical order
-    attackerElement.textContent = attackers;
+    attackerElement.textContent = attackers.sort(); // alphabetical order
 };
 
 // Get the attackers for each defender type
