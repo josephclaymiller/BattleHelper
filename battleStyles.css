@@ -1,0 +1,27 @@
+body {
+    background: gray;
+}
+
+.picker { 
+  border: 2px solid black;
+  background-color: white;
+  margin: 2px;
+  padding: 0px 10px;  /* vertical | horizontal */
+  display: inline-block;
+}
+
+#strongAttackers {
+    color: green;
+}
+
+#weakAttackers {
+    color: orange;
+}
+
+#noAttackers {
+    color: red;
+}
+
+#defender {
+    color: red;
+}
