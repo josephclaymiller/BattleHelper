@@ -8,12 +8,12 @@
         <link rel="stylesheet" href="battleStyles.css">
     </head>
     <body>
-        <h2>Find the Strongest</h2>
+        <h2>Type Matchup</h2>
 
         <div class="picker">
         <h3>Defending Type</h3>
         <p>
-            Select the types of the defending fighter
+            Select the type(s) of the defending fighter
         </p>
             Type 1:
             <select id="defender1" onchange="defenderChanged()">
@@ -66,8 +66,10 @@
                 <span id="strongAttackers"></span>
                 <br/>
                 Weak:
+                <span id="weakAttackers"></span>
                 <br/>
                 No effect:
+                <span id="noAttackers"></span>
             </p>
         </div>
 

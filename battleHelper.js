@@ -28,8 +28,18 @@ function getDefenderTypes() {
 
 // Show list of attackers to user
 function showAttackers(attackers) {
-    var attackerElement = document.getElementById("strongAttackers");
-    attackerElement.textContent = attackers.sort(); // alphabetical order
+    var strongAttackers = attackers["strong"];
+    var weakAttackers = attackers["weak"];
+    var noAttackers = attackers["non"];
+    // show strong attackers
+    var strongAttackersElement = document.getElementById("strongAttackers");
+    strongAttackersElement.textContent = strongAttackers.sort(); // alphabetical order
+    // show weak attackers
+    var weakAttackersElement = document.getElementById("weakAttackers");
+    weakAttackersElement.textContent = weakAttackers.sort(); 
+    // show no attackers
+    var noAttackersElement = document.getElementById("noAttackers");
+    noAttackersElement.textContent = noAttackers.sort(); 
 };
 
 // Get the attackers for each defender type
@@ -50,9 +60,13 @@ function getAttackers(defenderTypes) {
         var attacker = strongAttackers[a];
         if (weakAttackers.indexOf(attacker) > -1) { continue; }
         if (noAttackers.indexOf(attacker) > -1) { continue; }
-        if (attackers.includes(attacker)) { continue; }
         attackers.push(attacker);
     }
+    strongAttackers = attackers;
+    strongAttackers = removeDuplicates(strongAttackers);
+    weakAttackers = removeDuplicates(weakAttackers);
+    noAttackers = removeDuplicates(noAttackers);
+    attackers = {"strong": strongAttackers, "weak": weakAttackers, "non":noAttackers};
     return attackers;
 };
 
@@ -99,4 +113,14 @@ function getTypes() {
         typeArray.push(type);
     }
     return typeArray;
+};
+
+function removeDuplicates(arr) {
+    var uniqueArr =[];
+    for (var a =0; a < arr.length; a++) {
+        var element = arr[a];
+        if (uniqueArr.includes(element)) { continue; }
+        uniqueArr.push(element);
+    }
+    return uniqueArr;
 };
