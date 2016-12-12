@@ -9,13 +9,13 @@ var types = {
         "noEffect":[]
     },
     "fire":{
-        "strong":["grass","ice","bug"],
+        "strong":["grass","bug","ice","steel"],
         "weak":["fire","water","rock","dragon"],
         "noEffect":[]
     },
     "grass":{
-        "strong":["water"],
-        "weak":["fire","grass","dragon"],
+        "strong":["water","ground","rock"],
+        "weak":["fire","grass","dragon","bug","flying","poison","steel"],
         "noEffect":[]
     },
     "normal":{
