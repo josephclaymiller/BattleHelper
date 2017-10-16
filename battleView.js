@@ -32,3 +32,26 @@ function showAttackers(attackers) {
     var noAttackersElement = document.getElementById("noAttackers");
     noAttackersElement.textContent = noAttackers.sort(); 
 };
+
+// Generate content when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    addDefenderSelect("defenderList1", 1);
+    addDefenderSelect("defenderList2", 2);
+
+}, false);
+
+// Create dropdown menues based on types list
+function addDefenderSelect(divname, listNum) {
+    var newDiv=document.createElement('div');
+    var divID = "defender" + listNum;
+    var html = '<select id=' + divID + '>';
+    var defenderTypes = getTypes();
+    var i;
+    html += '<option value=""selected>-</option>'
+    for(i = 0; i < defenderTypes.length; i++) {
+        html += "<option value='"+defenderTypes[i]+"'>"+defenderTypes[i]+"</option>";
+    }
+    html += '</select>';
+    newDiv.innerHTML= html;
+    document.getElementById(divname).appendChild(newDiv);
+};
