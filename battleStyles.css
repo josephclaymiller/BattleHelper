@@ -10,18 +10,22 @@ body {
   display: inline-block;
 }
 
-#strongAttackers {
+#superStrong {
+    color: blue;
+}
+
+#strong {
     color: green;
 }
 
-#weakAttackers {
+#weak {
     color: orange;
 }
 
-#noAttackers {
+#superWeak {
     color: red;
 }
 
-#defender {
-    color: red;
+#non {
+    color: purple;
 }

@@ -9,16 +9,57 @@
 // Get the attackers for each defending type
 function getAttackers(defenderTypes) {
     var attackers = [];
+    var superStrongAttackers = [];
+    var strongAttackers = [];
+    var weakAttackers = [];
+    var superWeakAttackers = [];
+    var noAttackers = [];
+    var strongWeakAttakers = [];
+    defenderTypes.forEach(function(type) {
+        attackersforType = getAttackersForDefenderType(type);
+        strongAttackers = strongAttackers.concat(attackersforType["strong"]);
+        weakAttackers = weakAttackers.concat(attackersforType["weak"]);
+        noAttackers = noAttackers.concat(attackersforType["non"]);
+    });   
+    // if same type in no effect, remove duplicate
+    noAttackers = removeDuplicates(noAttackers);
+    // if same type in strong, remove and add to super strong
+    superStrongAttackers = findDuplicates(strongAttackers);
+    if (superStrongAttackers.length > 0) {
+        strongAttackers = removeElements(strongAttackers, superStrongAttackers);
+    }
+    // if same type in weak, remove and add to super weak
+    superWeakAttackers = findDuplicates(weakAttackers);
+    if (superWeakAttackers.length > 0) {
+        weakAttackers = removeElements(weakAttackers, superWeakAttackers);
+    }
+    // if same type in strong and weak, remove from both
+    strongWeakAttakers = findDuplicates(strongAttackers.concat(weakAttackers));
+    if (strongWeakAttakers.length > 0) {
+        strongAttackers = removeElements(strongAttackers, strongWeakAttakers);
+        weakAttackers = removeElements(weakAttackers, strongWeakAttakers);
+    }
+
+
+    attackers = {
+        "superStrong": superStrongAttackers, 
+        "strong": strongAttackers, 
+        "weak": weakAttackers, 
+        "superWeak": superWeakAttackers, 
+        "non":noAttackers
+    };
+    return attackers;
+};
+
+function getAttackersForDefenderType(type) {
+    var attackers = [];
     var strongAttackers = [];
     var weakAttackers = [];
     var noAttackers = [];
-    defenderTypes.forEach(function(type) {
-        weakAttackers = weakAttackers.concat(findWeakAttackers(type));
-        noAttackers = noAttackers.concat(findNoAttackers(type));
-    });
-    weakAttackers = removeDuplicates(weakAttackers);
-    noAttackers = removeDuplicates(noAttackers);
-    strongAttackers = getStrongAttackers(defenderTypes, weakAttackers, noAttackers);
+    strongAttackers = strongAttackers.concat(findStrongAttackers(type));
+    weakAttackers = weakAttackers.concat(findWeakAttackers(type));
+    noAttackers = noAttackers.concat(findNoAttackers(type));
+
     attackers = {"strong": strongAttackers, "weak": weakAttackers, "non":noAttackers};
     return attackers;
 };
@@ -100,4 +141,30 @@ function removeDuplicates(arr) {
         uniqueArr.push(element);
     }
     return uniqueArr;
+};
+
+// Remove duplicates in the attackers list
+function findDuplicates(arr) {
+    var uniqueArr = [];
+    var duplicates = [];
+    for (var a =0; a < arr.length; a++) {
+        var element = arr[a];
+        if (uniqueArr.includes(element)) { 
+            duplicates.push(element);
+        } else {
+            uniqueArr.push(element);
+        }
+    }
+    return duplicates;
+};
+
+// remove from an array elements that exists in another array
+function removeElements(keepArr, removeArr) {
+    var filteredArr = [];
+    for (var a =0; a < keepArr.length; a++) {
+        var element = keepArr[a];
+        if (removeArr.includes(element)) { continue; }
+        filteredArr.push(element);
+    }
+    return filteredArr;
 };
