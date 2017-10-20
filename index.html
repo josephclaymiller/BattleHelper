@@ -12,27 +12,18 @@
         <h2>Type Matchup</h2>
 
         <div class="picker">
-        <h3>Defending Type</h3>
-        <p>
-            Select the type(s) of the defending fighter
-        </p>        
-        <div id="defenderList1" onchange="defenderChanged()">
-            Type 1:
-        </div>
-        <div id="defenderList2" onchange="defenderChanged()">
-            Type 2:
-        </div>
-        <p>
+            <h3>Defending Type</h3>
+            <p>
+                Select the type(s) of the defending fighter
+            </p>        
+            <div id="defenderList1" onchange="defenderChanged()"></div>
+            <div id="defenderList2" onchange="defenderChanged()"></div>
+            
             <h4>Attacking Types</h4>
-            Strong:
-            <span id="strongAttackers"></span>
-            <br/>
-            Weak:
-            <span id="weakAttackers"></span>
-            <br/>
-            No effect:
-            <span id="noAttackers"></span>
-        </p>
+            <div id="attackingTypes">
+                <!-- Types that are strong, weak, or have no effect
+                        on the chosen defender type(s) -->
+            </div>
         </div>
 
     </body>
